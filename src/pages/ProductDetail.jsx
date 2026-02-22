@@ -281,14 +281,14 @@ export default function ProductDetail() {
             </div>
 
             {/* Related Products */}
-            <section className="border-t border-slate-200 pt-10 mb-12">
-                <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Produk Serupa</h2>
-                    <Link to="/products" className="text-primary font-semibold text-sm hover:underline flex items-center gap-1">
-                        Lihat Semua <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-                    </Link>
-                </div>
-                {related.length > 0 ? (
+            {related.length > 0 && (
+                <section className="border-t border-slate-200 pt-10 mb-12">
+                    <div className="flex items-center justify-between mb-6">
+                        <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Produk Serupa</h2>
+                        <Link to="/products" className="text-primary font-semibold text-sm hover:underline flex items-center gap-1">
+                            Lihat Semua <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        </Link>
+                    </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {related.map((p) => (
                             <div key={p.id} className="group bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col">
@@ -311,10 +311,8 @@ export default function ProductDetail() {
                             </div>
                         ))}
                     </div>
-                ) : (
-                    <p className="text-slate-500 italic">Belum ada produk serupa di kategori ini.</p>
-                )}
-            </section>
+                </section>
+            )}
         </div>
     )
 }
