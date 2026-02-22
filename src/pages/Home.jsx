@@ -20,23 +20,31 @@ const reasons = [
 
 export default function Home() {
     const [products, setProducts] = useState([])
+    const [testimonials, setTestimonials] = useState([])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        async function fetchProducts() {
+        async function fetchData() {
             setLoading(true)
-            const { data, error } = await supabase
+
+            const { data: prodData } = await supabase
                 .from('products')
                 .select('*')
                 .order('created_at', { ascending: false })
                 .limit(3)
+            if (prodData) setProducts(prodData)
 
-            if (!error && data) {
-                setProducts(data)
-            }
+            const { data: testiData } = await supabase
+                .from('testimonials')
+                .select('*')
+                .eq('is_active', true)
+                .order('created_at', { ascending: false })
+                .limit(4)
+            if (testiData) setTestimonials(testiData)
+
             setLoading(false)
         }
-        fetchProducts()
+        fetchData()
     }, [])
 
     const formatRp = (angka) => {
@@ -157,21 +165,39 @@ export default function Home() {
             </section>
 
             {/* Testimonial */}
-            <AnimateOnScroll>
+            {testimonials.length > 0 && (
                 <section className="py-16 px-4">
-                    <div className="max-w-4xl mx-auto text-center">
-                        <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-10">Apa Kata Klien Kami?</h2>
-                        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-8 shadow-sm">
-                            <div className="flex justify-center gap-1 mb-6">{[...Array(5)].map((_, i) => <span key={i} className="material-symbols-outlined text-yellow-400" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>)}</div>
-                            <p className="text-slate-600 dark:text-slate-300 italic text-lg leading-relaxed max-w-2xl mx-auto">"Unit dental yang kami beli dari Karya Mandiri Dental kualitasnya sangat bagus, hampir seperti baru. Proses refurbish yang dilakukan sangat teliti dan profesional."</p>
-                            <div className="mt-6 flex items-center justify-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm">DR</div>
-                                <div className="text-left"><p className="font-bold text-slate-900 dark:text-white text-sm">Dr. Ratna Sari</p><p className="text-xs text-slate-500 dark:text-slate-400">Klinik Gigi Sejahtera, Jakarta</p></div>
-                            </div>
+                    <div className="max-w-7xl mx-auto text-center">
+                        <AnimateOnScroll>
+                            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-10">Apa Kata Klien Kami?</h2>
+                        </AnimateOnScroll>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 max-w-5xl mx-auto">
+                            {testimonials.map((t, i) => (
+                                <AnimateOnScroll key={t.id} delay={i * 100} animation="fade-in">
+                                    <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-8 shadow-sm h-full flex flex-col hover:shadow-md transition-shadow">
+                                        <div className="flex justify-center gap-1 mb-4">
+                                            {[...Array(t.rating)].map((_, i) => <span key={i} className="material-symbols-outlined text-yellow-400 text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>)}
+                                            {[...Array(5 - t.rating)].map((_, i) => <span key={i} className="material-symbols-outlined text-gray-300 text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>)}
+                                        </div>
+                                        <p className="text-slate-600 dark:text-slate-300 italic text-sm md:text-base leading-relaxed flex-grow">"{t.review}"</p>
+                                        <div className="mt-6 pt-6 border-t border-slate-100 dark:border-slate-700 flex items-center justify-center gap-3">
+                                            {t.image_url ? (
+                                                <img src={t.image_url} alt={t.customer_name} className="w-12 h-12 rounded-full object-cover border border-slate-200" />
+                                            ) : (
+                                                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">{t.customer_name.charAt(0)}</div>
+                                            )}
+                                            <div className="text-left">
+                                                <p className="font-bold text-slate-900 dark:text-white text-sm">{t.customer_name}</p>
+                                                <p className="text-xs text-slate-500 dark:text-slate-400">{t.clinic_name || 'Klinik Gigi'}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </AnimateOnScroll>
+                            ))}
                         </div>
                     </div>
                 </section>
-            </AnimateOnScroll>
+            )}
 
             {/* CTA */}
             <AnimateOnScroll animation="zoom-in">

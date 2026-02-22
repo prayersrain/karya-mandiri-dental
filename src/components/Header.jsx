@@ -8,7 +8,6 @@ const navLinks = [
     { to: '/', label: 'Beranda' },
     { to: '/products', label: 'Produk' },
     { to: '/service', label: 'Layanan' },
-    { to: '/blog', label: 'Blog' },
     { to: '/about', label: 'Tentang' },
     { to: '/contact', label: 'Kontak' },
 ]

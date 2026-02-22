@@ -29,7 +29,6 @@ export default function Footer() {
                         <h3 className="font-bold text-slate-900 dark:text-white mb-4">Perusahaan</h3>
                         <ul className="space-y-3 text-sm text-slate-500 dark:text-slate-400">
                             <li><Link className="hover:text-primary transition-colors" to="/about">Tentang Kami</Link></li>
-                            <li><Link className="hover:text-primary transition-colors" to="/blog">Blog</Link></li>
                             <li><Link className="hover:text-primary transition-colors" to="/contact">Kontak</Link></li>
                         </ul>
                     </div>

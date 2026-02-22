@@ -10,6 +10,10 @@ export default function Products() {
     const [filteredProducts, setFilteredProducts] = useState([])
     const [loading, setLoading] = useState(true)
 
+    // Pagination states
+    const [currentPage, setCurrentPage] = useState(1)
+    const itemsPerPage = 6
+
     // Filter states
     const [searchTerm, setSearchTerm] = useState('')
     const [sortBy, setSortBy] = useState('Terbaru')
@@ -75,6 +79,7 @@ export default function Products() {
         }
 
         setFilteredProducts(result)
+        setCurrentPage(1) // Reset ke halaman 1 setiap kali filter berubah
     }, [products, searchTerm, filters, sortBy])
 
     const handleFilterChange = (key) => {
@@ -96,6 +101,17 @@ export default function Products() {
     // Formatting currency
     const formatRp = (angka) => {
         return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(angka)
+    }
+
+    // Pagination calculations
+    const totalPages = Math.ceil(filteredProducts.length / itemsPerPage)
+    const paginatedProducts = filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+
+    const handlePageChange = (page) => {
+        if (page >= 1 && page <= totalPages) {
+            setCurrentPage(page)
+            window.scrollTo({ top: 300, behavior: 'smooth' })
+        }
     }
 
     const getBadgeStyle = (condition) => {
@@ -229,7 +245,7 @@ export default function Products() {
                                     <button onClick={resetFilters} className="mt-6 text-primary font-bold hover:underline">Reset Semua Filter</button>
                                 </div>
                             ) : (
-                                filteredProducts.map(p => (
+                                paginatedProducts.map(p => (
                                     <div key={p.id} className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col">
                                         <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
                                             <div className={`absolute top-3 left-3 z-10 ${getBadgeStyle(p.condition)} text-xs font-bold px-2.5 py-1 rounded-full border`}>{p.condition}</div>
@@ -253,17 +269,28 @@ export default function Products() {
                     )}
 
                     {/* Pagination */}
-                    <div className="mt-12 flex justify-center">
-                        <nav className="flex items-center gap-1">
-                            <button className="p-2 rounded-lg text-slate-500 hover:bg-slate-100"><span className="material-symbols-outlined">chevron_left</span></button>
-                            <button className="w-10 h-10 rounded-lg bg-primary text-white font-bold text-sm">1</button>
-                            <button className="w-10 h-10 rounded-lg text-slate-600 hover:bg-slate-100 font-medium text-sm">2</button>
-                            <button className="w-10 h-10 rounded-lg text-slate-600 hover:bg-slate-100 font-medium text-sm">3</button>
-                            <span className="w-10 text-center text-slate-400">...</span>
-                            <button className="w-10 h-10 rounded-lg text-slate-600 hover:bg-slate-100 font-medium text-sm">8</button>
-                            <button className="p-2 rounded-lg text-slate-500 hover:bg-slate-100"><span className="material-symbols-outlined">chevron_right</span></button>
-                        </nav>
-                    </div>
+                    {totalPages > 1 && (
+                        <div className="mt-12 flex justify-center">
+                            <nav className="flex items-center gap-1">
+                                <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 disabled:opacity-50"><span className="material-symbols-outlined">chevron_left</span></button>
+
+                                {[...Array(totalPages)].map((_, i) => {
+                                    const page = i + 1
+                                    return (
+                                        <button
+                                            key={page}
+                                            onClick={() => handlePageChange(page)}
+                                            className={`w-10 h-10 rounded-lg font-bold text-sm transition-colors ${currentPage === page ? 'bg-primary text-white' : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'}`}
+                                        >
+                                            {page}
+                                        </button>
+                                    )
+                                })}
+
+                                <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 disabled:opacity-50"><span className="material-symbols-outlined">chevron_right</span></button>
+                            </nav>
+                        </div>
+                    )}
                 </div>
             </div>
         </>
