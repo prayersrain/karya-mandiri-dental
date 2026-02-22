@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
 import { supabase } from '../lib/supabase'
+import toast from 'react-hot-toast'
 
 export default function Contact() {
     const [form, setForm] = useState({ nama: '', email: '', wa: '', subjek: 'Pertanyaan Umum', pesan: '' })
@@ -24,10 +25,12 @@ export default function Contact() {
         if (error) {
             console.error('Error submitting form:', error)
             setStatus('error')
+            toast.error('Gagal mengirim pesan. Silakan coba lagi.')
             return
         }
 
         setStatus('success')
+        toast.success('Pesan Anda berhasil terkirim!')
         setForm({ nama: '', email: '', wa: '', subjek: 'Pertanyaan Umum', pesan: '' })
     }
 

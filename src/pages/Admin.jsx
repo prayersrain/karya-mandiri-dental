@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
+import toast from 'react-hot-toast'
 
 export default function Admin() {
     const [activeTab, setActiveTab] = useState('products') // 'products' | 'messages' | 'testimonials'
@@ -64,7 +65,7 @@ export default function Admin() {
             .upload(filePath, file)
 
         if (uploadError) {
-            alert('Gagal mengupload gambar: ' + uploadError.message)
+            toast.error('Gagal mengupload gambar: ' + uploadError.message)
             return null
         }
 
@@ -132,8 +133,10 @@ export default function Admin() {
 
         if (editingId) {
             await supabase.from('products').update(payload).eq('id', editingId)
+            toast.success('Produk berhasil diperbarui!')
         } else {
             await supabase.from('products').insert([payload])
+            toast.success('Produk baru berhasil ditambahkan!')
         }
 
         setForm({ name: '', brand: '', price: '', condition: 'Refurbished', category: 'Dental Unit (Fix)', description: '', image_url: '', gallery_urls: '', features: '', inclusions: '', warranty: '' })
@@ -148,8 +151,10 @@ export default function Admin() {
 
         if (editingTestiId) {
             await supabase.from('testimonials').update(payload).eq('id', editingTestiId)
+            toast.success('Testimoni berhasil diperbarui!')
         } else {
             await supabase.from('testimonials').insert([payload])
+            toast.success('Testimoni baru berhasil ditambahkan!')
         }
 
         setTestiForm({ customer_name: '', clinic_name: '', review: '', rating: 5, image_url: '', is_active: true })
@@ -173,6 +178,7 @@ export default function Admin() {
         if (window.confirm("Yakin ingin menghapus produk ini?")) {
             setLoading(true)
             await supabase.from('products').delete().eq('id', id)
+            toast.success('Produk berhasil dihapus!')
             await fetchProducts()
         }
     }
@@ -181,6 +187,7 @@ export default function Admin() {
         if (window.confirm("Yakin ingin menghapus pesan ini?")) {
             setLoading(true)
             await supabase.from('contact_messages').delete().eq('id', id)
+            toast.success('Pesan berhasil dihapus!')
             await fetchMessages()
         }
     }
@@ -189,6 +196,7 @@ export default function Admin() {
         if (window.confirm("Yakin ingin menghapus testimoni ini?")) {
             setLoading(true)
             await supabase.from('testimonials').delete().eq('id', id)
+            toast.success('Testimoni berhasil dihapus!')
             await fetchTestimonials()
         }
     }
@@ -196,6 +204,7 @@ export default function Admin() {
     const handleToggleActiveTesti = async (id, currentStatus) => {
         setLoading(true)
         await supabase.from('testimonials').update({ is_active: !currentStatus }).eq('id', id)
+        toast.success(`Testimoni berhasil ${!currentStatus ? 'diaktifkan' : 'dinonaktifkan'}`)
         await fetchTestimonials()
     }
 

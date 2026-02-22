@@ -14,6 +14,7 @@ import Admin from './pages/Admin'
 import Login from './pages/Login'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { Navigate } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
 
 function ProtectedRoute({ children }) {
   const { session } = useAuth()
@@ -46,6 +47,13 @@ export default function App() {
       <AuthProvider>
         <BrowserRouter>
           <ScrollToTop />
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              className: 'dark:bg-slate-800 dark:text-white border border-slate-100 dark:border-slate-700 font-medium',
+              duration: 4000
+            }}
+          />
           <Layout>
             <Routes>
               <Route path="/" element={<Home />} />

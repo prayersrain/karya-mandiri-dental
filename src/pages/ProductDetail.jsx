@@ -3,21 +3,25 @@ import { Link, useParams, useNavigate } from 'react-router-dom'
 import { useSEO } from '../hooks/useSEO'
 import { supabase } from '../lib/supabase'
 
-const relatedProducts = [
-    { name: 'Morita Signo G10', sub: 'Unit Bekas Berkualitas', price: 'Rp 65.000.000', grade: 'Grade B', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCAXKO7dlZs6AO2rxWnbXGj2O6x62iaHfZ3MTBszlq-td-yjXpwqsUlJwhBjo-HQs2mG7YjbBBmuAc4SNqVsIObSJci-nHsyCMlYE1iL0zNHt6TRVPX4fEwm58joPwoUELzkStKmYVpXlKiMA1odHP2l14DxVFbA9cd5md7BQIVCVgaq4OzGTYORh7uYqpOsSgBBaUZvenC8aFcLvRGhWi6FuDS8EVkS2T973Yk18YVWeLc1oqYIuL8y09jmd4ci4QvlETmdIJwkMe4' },
-    { name: 'Osada Smile Cure', sub: 'Refurbished Full Set', price: 'Rp 38.000.000', grade: 'Grade A', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDAoum8HMMWYufE9IT3uPIVeIBQkQcI93SYm0EcXNMoulaJzp7KTsIB1j83Mz3Bk_Yz6-8kFpvGiQJ2Q4JHySL5zZOr-Og_tiFdY_DDx0KGm5wQP2BitKIq4oplI-9kDFCWlIUbEofI5GSQMJpGminfqN8VxuXMaG1WLllODcdKkgeI-c6Zrp-VIOigVk6PIIUuukrHhFETQz602I-HqD86Y-tmDdYxs3fWgDyQP5qGO9-q3X-ySDLeZZlWAhcmDGhqykv9G1q74nDU' },
-    { name: 'Gnatus G4 Premium', sub: 'Unit Baru Garansi Resmi', price: 'Call for Price', grade: 'Baru', gradeColor: 'bg-primary text-white', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCC_9X2IVDYseVihmeaVl9z-wZ5XECgbT3Nbb7xBU0y9oL0BmZ0l3PTDqDohqfxdCOKxaYvsqFxjnca87l9Doct49leRguXIfrNBL052K4dPYuDMpFJqdWfGM1EB5SEyy5GT86QxH-RSm94j8xFtQNmc7zDTVRmJwJ5HzHoy14-KGliOCe4IeUq3V69HWQkrL350N7PFZA2DN2SvF1jQCcOpzQUbF1SfOTVdNV9THqvGEy58ncROBBZh2zaNv-go_dh7wZMmeSks0qf' },
-    { name: 'Belmont Cleo II', sub: 'Lipat Otomatis', price: 'Rp 52.000.000', grade: 'Grade B+', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAgQlyMDghuuv3Eb7rCHxTolP4w-nambYOv3YiDM7q0hUiriaxMI2-bKRe-d5l8-SkUHoiImAw02jg5ahfi4fp9Fl8kp3PZfV-vR0rRdql0G3Eqf_2_ZPHphVl9FGLKRvig7gLxvYihG0o9ocFnK4o4Xg9GledV1qWbcyjPNPeHIjEwr9TCMjGtmMrqUsjZEU_rShZiyLOK0uXKgei_wxBNJBvxdgu0E4B-vHFwCf5-KWWOLk7xg4oc4ysOfYfNJn7W7DEKcs0WfH9z' },
-]
+// Import Swiper React components and styles
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Pagination, Navigation, Autoplay } from 'swiper/modules'
+import 'swiper/css'
+import 'swiper/css/pagination'
+import 'swiper/css/navigation'
 
-// Static mock data replaced by dynamic DB fields
-// const specs = [...]
-// const features = [...]
+// Import Swiper React components and styles
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Pagination, Navigation, Autoplay } from 'swiper/modules'
+import 'swiper/css'
+import 'swiper/css/pagination'
+import 'swiper/css/navigation'
 
 export default function ProductDetail() {
     const { id } = useParams()
     const navigate = useNavigate()
     const [product, setProduct] = useState(null)
+    const [related, setRelated] = useState([])
     const [loading, setLoading] = useState(true)
     const [selectedImg, setSelectedImg] = useState(0)
     const [activeTab, setActiveTab] = useState('features')
@@ -36,6 +40,16 @@ export default function ProductDetail() {
                 navigate('/products') // Redirect if not found
             } else {
                 setProduct(data)
+
+                // Fetch related products (same category, exclude current)
+                const { data: relatedData } = await supabase
+                    .from('products')
+                    .select('*')
+                    .eq('category', data.category)
+                    .neq('id', data.id)
+                    .limit(4)
+
+                if (relatedData) setRelated(relatedData)
             }
             setLoading(false)
         }
@@ -99,23 +113,26 @@ export default function ProductDetail() {
 
             {/* Product Details Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mb-12">
-                {/* Gallery */}
+                {/* Gallery Carousel */}
                 <div className="lg:col-span-7 flex flex-col gap-4">
-                    <div className="aspect-[4/3] w-full bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 relative group">
-                        <img src={allImages[selectedImg]} alt={product.name} className="w-full h-full object-cover" />
-                        <div className="absolute top-4 left-4">
+                    <div className="w-full bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 relative group">
+                        <Swiper
+                            modules={[Pagination, Navigation, Autoplay]}
+                            pagination={{ clickable: true, dynamicBullets: true }}
+                            navigation={true}
+                            autoplay={{ delay: 4000, disableOnInteraction: false }}
+                            loop={allImages.length > 1}
+                            className="w-full aspect-[4/3]"
+                        >
+                            {allImages.map((img, idx) => (
+                                <SwiperSlide key={idx}>
+                                    <img src={img} alt={`${product.name} - slide ${idx + 1}`} className="w-full h-full object-cover" />
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
+                        <div className="absolute top-4 left-4 z-10 pointer-events-none">
                             <span className="bg-primary/90 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wide backdrop-blur-sm shadow-sm">{product.brand}</span>
                         </div>
-                    </div>
-                    <div className="grid grid-cols-5 gap-2 sm:gap-4">
-                        {allImages.slice(0, 4).map((img, i) => (
-                            <button key={i} onClick={() => setSelectedImg(i)} className={`aspect-square rounded-lg overflow-hidden ${selectedImg === i ? 'border-2 border-primary' : 'border border-slate-200 hover:border-primary'} transition-colors`}>
-                                <img src={img} alt={`Thumbnail ${i + 1}`} className="w-full h-full object-cover" />
-                            </button>
-                        ))}
-                        <button className="aspect-square rounded-lg border border-slate-200 bg-slate-100 flex items-center justify-center text-slate-500 hover:text-primary transition-colors">
-                            <span className="material-symbols-outlined text-[24px]">grid_view</span>
-                        </button>
                     </div>
                 </div>
 
@@ -271,28 +288,32 @@ export default function ProductDetail() {
                         Lihat Semua <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
                     </Link>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {relatedProducts.map((p, i) => (
-                        <div key={i} className="group bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col">
-                            <div className="aspect-video w-full overflow-hidden bg-slate-100 relative">
-                                <div className="absolute top-2 right-2 z-10">
-                                    <span className={`${p.gradeColor || 'bg-white/90 text-slate-700'} text-xs font-bold px-2 py-1 rounded backdrop-blur-sm shadow-sm`}>{p.grade}</span>
+                {related.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {related.map((p) => (
+                            <div key={p.id} className="group bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col">
+                                <div className="aspect-video w-full overflow-hidden bg-slate-100 relative">
+                                    <div className="absolute top-2 right-2 z-10">
+                                        <span className={`${getBadgeStyle(p.condition)} text-xs font-bold px-2 py-1 rounded backdrop-blur-sm shadow-sm`}>{p.condition}</span>
+                                    </div>
+                                    <img src={p.image_url} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                 </div>
-                                <img src={p.img} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                            </div>
-                            <div className="p-4 flex flex-col flex-1">
-                                <h3 className="font-bold text-slate-900 text-lg mb-1 group-hover:text-primary transition-colors">{p.name}</h3>
-                                <p className="text-sm text-slate-500 mb-3">{p.sub}</p>
-                                <div className="mt-auto flex items-center justify-between">
-                                    <span className="text-primary font-bold">{p.price}</span>
-                                    <Link to="/products/1" className="size-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-primary hover:text-white transition-colors">
-                                        <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                                    </Link>
+                                <div className="p-4 flex flex-col flex-1">
+                                    <h3 className="font-bold text-slate-900 dark:text-white text-lg mb-1 group-hover:text-primary transition-colors">{p.name}</h3>
+                                    <p className="text-sm text-slate-500 mb-3">{p.category}</p>
+                                    <div className="mt-auto flex items-center justify-between">
+                                        <span className="text-primary font-bold">{formatRp(p.price)}</span>
+                                        <Link to={`/products/${p.id}`} className="size-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-primary hover:text-white transition-colors">
+                                            <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-slate-500 italic">Belum ada produk serupa di kategori ini.</p>
+                )}
             </section>
         </div>
     )
