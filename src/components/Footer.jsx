@@ -1,6 +1,22 @@
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function Footer() {
+    const navigate = useNavigate()
+    const [clickCount, setClickCount] = useState(0)
+
+    useEffect(() => {
+        let timer;
+        if (clickCount > 0 && clickCount < 5) {
+            timer = setTimeout(() => {
+                setClickCount(0)
+            }, 1000)
+        } else if (clickCount >= 5) {
+            setClickCount(0)
+            navigate('/login')
+        }
+        return () => clearTimeout(timer)
+    }, [clickCount, navigate])
     return (
         <footer className="bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-4 pt-16 pb-8 md:px-10 transition-colors duration-300">
             <div className="mx-auto max-w-7xl">
@@ -51,7 +67,12 @@ export default function Footer() {
                     </div>
                 </div>
                 <div className="border-t border-slate-200 dark:border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-sm text-slate-400">© 2024 Karya Mandiri Dental. All rights reserved.</p>
+                    <p
+                        className="text-sm text-slate-400 select-none cursor-default"
+                        onClick={() => setClickCount(prev => prev + 1)}
+                    >
+                        © 2024 Karya Mandiri Dental. All rights reserved.
+                    </p>
                     <div className="flex gap-4">
                         <a className="text-slate-400 hover:text-primary transition-colors" href="#">
                             <span className="sr-only">Facebook</span>
