@@ -5,7 +5,8 @@ export default function Admin() {
     const [products, setProducts] = useState([])
     const [loading, setLoading] = useState(true)
     const [form, setForm] = useState({
-        name: '', brand: '', price: '', condition: 'Refurbished', category: 'Dental Unit (Fix)', description: '', image_url: '', gallery_urls: ''
+        name: '', brand: '', price: '', condition: 'Refurbished', category: 'Dental Unit (Fix)', description: '', image_url: '', gallery_urls: '',
+        features: '', inclusions: '', warranty: ''
     })
     const [editingId, setEditingId] = useState(null)
 
@@ -95,7 +96,7 @@ export default function Admin() {
             await supabase.from('products').insert([payload])
         }
 
-        setForm({ name: '', brand: '', price: '', condition: 'Refurbished', category: 'Dental Unit (Fix)', description: '', image_url: '', gallery_urls: '' })
+        setForm({ name: '', brand: '', price: '', condition: 'Refurbished', category: 'Dental Unit (Fix)', description: '', image_url: '', gallery_urls: '', features: '', inclusions: '', warranty: '' })
         setEditingId(null)
         await fetchProducts()
     }
@@ -166,15 +167,30 @@ export default function Admin() {
                         </div>
                     </div>
                     <div className="md:col-span-2">
-                        <label className="block text-sm font-semibold mb-1 dark:text-slate-300">Deskripsi Singkat</label>
-                        <textarea name="description" value={form.description} onChange={handleChange} className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900 dark:border-slate-600 dark:text-white" rows="3"></textarea>
+                        <label className="block text-sm font-semibold mb-1 dark:text-slate-300">Deskripsi Singkat Tambahan</label>
+                        <textarea name="description" value={form.description || ''} onChange={handleChange} className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900 dark:border-slate-600 dark:text-white text-sm" rows="2"></textarea>
+                    </div>
+                    <div className="md:col-span-2">
+                        <label className="block text-sm font-semibold mb-1 dark:text-slate-300">Fitur Unggulan & Spesifikasi Khusus</label>
+                        <p className="text-xs text-slate-500 mb-2">Gunakan Enter (Baris Baru) untuk memisahkan setiap poin/bullet-list.</p>
+                        <textarea name="features" value={form.features || ''} onChange={handleChange} className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900 dark:border-slate-600 dark:text-white text-sm" rows="3"></textarea>
+                    </div>
+                    <div className="md:col-span-1">
+                        <label className="block text-sm font-semibold mb-1 dark:text-slate-300">Kelengkapan Unit</label>
+                        <p className="text-xs text-slate-500 mb-2">Daftar part bawaan (Gunakan baris baru).</p>
+                        <textarea name="inclusions" value={form.inclusions || ''} onChange={handleChange} className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900 dark:border-slate-600 dark:text-white text-sm" rows="3"></textarea>
+                    </div>
+                    <div className="md:col-span-1">
+                        <label className="block text-sm font-semibold mb-1 dark:text-slate-300">Info Garansi</label>
+                        <p className="text-xs text-slate-500 mb-2">Penjelasan klaim / durasi (Gunakan baris baru).</p>
+                        <textarea name="warranty" value={form.warranty || ''} onChange={handleChange} className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900 dark:border-slate-600 dark:text-white text-sm" rows="3"></textarea>
                     </div>
                     <div className="md:col-span-2 flex gap-3">
                         <button type="submit" disabled={loading} className="bg-primary text-white px-6 py-2 rounded-lg font-bold hover:bg-primary/90 disabled:opacity-50">
                             {loading ? 'Menyimpan...' : (editingId ? 'Simpan Perubahan' : 'Tambah Produk')}
                         </button>
                         {editingId && (
-                            <button type="button" onClick={() => { setEditingId(null); setForm({ name: '', brand: '', price: '', condition: 'Refurbished', category: 'Dental Unit (Fix)', description: '', image_url: '', gallery_urls: '' }) }} className="bg-slate-200 text-slate-700 px-6 py-2 rounded-lg font-bold hover:bg-slate-300">
+                            <button type="button" onClick={() => { setEditingId(null); setForm({ name: '', brand: '', price: '', condition: 'Refurbished', category: 'Dental Unit (Fix)', description: '', image_url: '', gallery_urls: '', features: '', inclusions: '', warranty: '' }) }} className="bg-slate-200 text-slate-700 px-6 py-2 rounded-lg font-bold hover:bg-slate-300">
                                 Batal Edit
                             </button>
                         )}

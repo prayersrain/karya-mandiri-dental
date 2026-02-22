@@ -10,20 +10,9 @@ const relatedProducts = [
     { name: 'Belmont Cleo II', sub: 'Lipat Otomatis', price: 'Rp 52.000.000', grade: 'Grade B+', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAgQlyMDghuuv3Eb7rCHxTolP4w-nambYOv3YiDM7q0hUiriaxMI2-bKRe-d5l8-SkUHoiImAw02jg5ahfi4fp9Fl8kp3PZfV-vR0rRdql0G3Eqf_2_ZPHphVl9FGLKRvig7gLxvYihG0o9ocFnK4o4Xg9GledV1qWbcyjPNPeHIjEwr9TCMjGtmMrqUsjZEU_rShZiyLOK0uXKgei_wxBNJBvxdgu0E4B-vHFwCf5-KWWOLk7xg4oc4ysOfYfNJn7W7DEKcs0WfH9z' },
 ]
 
-const specs = [
-    ['Power Voltage', 'AC 220V 50Hz'],
-    ['Motor Voltage', 'DC 24V'],
-    ['Air Pressure', '0.5MPa - 0.8MPa'],
-    ['Water Pressure', '0.2MPa - 0.4MPa'],
-    ['Tipe Kursi', 'Hydraulic System with Memory'],
-]
-
-const features = [
-    'Desain ergonomis dengan sandaran ultra-tipis untuk kenyamanan dokter.',
-    'Lampu operasi LED sensor gerak dengan intensitas cahaya yang dapat diatur.',
-    'Spittoon keramik yang dapat diputar dan mudah dibersihkan.',
-    'Sistem kontrol asisten multifungsi.',
-]
+// Static mock data replaced by dynamic DB fields
+// const specs = [...]
+// const features = [...]
 
 export default function ProductDetail() {
     const { id } = useParams()
@@ -31,6 +20,7 @@ export default function ProductDetail() {
     const [product, setProduct] = useState(null)
     const [loading, setLoading] = useState(true)
     const [selectedImg, setSelectedImg] = useState(0)
+    const [activeTab, setActiveTab] = useState('features')
 
     useEffect(() => {
         async function fetchProduct() {
@@ -84,6 +74,15 @@ export default function ProductDetail() {
         if (condition === 'Second Original') return 'bg-amber-100 text-amber-800 border-amber-200'
         return 'bg-emerald-100 text-emerald-800 border-emerald-200'
     }
+
+    const parseList = (text) => {
+        if (!text) return []
+        return text.split('\n').map(t => t.trim()).filter(Boolean)
+    }
+
+    const parsedFeatures = parseList(product.features)
+    const parsedInclusions = parseList(product.inclusions)
+    const parsedWarranty = parseList(product.warranty)
 
     return (
         <div className="w-full max-w-7xl mx-auto px-4 lg:px-10 py-6">
@@ -160,57 +159,107 @@ export default function ProductDetail() {
                 </div>
             </div>
 
-            {/* Specs */}
+            {/* Tabs section */}
             <div className="mb-16">
-                <div className="border-b border-slate-200 mb-6">
-                    <nav className="flex gap-8 overflow-x-auto">
-                        <button className="border-b-2 border-primary py-4 px-1 text-sm font-semibold text-primary whitespace-nowrap">Spesifikasi Teknis</button>
-                        <button className="border-b-2 border-transparent py-4 px-1 text-sm font-medium text-slate-500 hover:text-slate-700 whitespace-nowrap">Kelengkapan Unit</button>
-                        <button className="border-b-2 border-transparent py-4 px-1 text-sm font-medium text-slate-500 hover:text-slate-700 whitespace-nowrap">Info Garansi &amp; Pengiriman</button>
+                <div className="border-b border-slate-200 mb-6 flex overflow-x-auto select-none no-scrollbar">
+                    <nav className="flex gap-2 sm:gap-8">
+                        <button
+                            onClick={() => setActiveTab('features')}
+                            className={`${activeTab === 'features' ? 'border-b-2 border-primary text-primary' : 'border-b-2 border-transparent text-slate-500 hover:text-slate-700'} py-4 px-2 sm:px-4 text-xs sm:text-sm font-semibold whitespace-nowrap transition-colors`}
+                        >
+                            Fitur & Spesifikasi
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('inclusions')}
+                            className={`${activeTab === 'inclusions' ? 'border-b-2 border-primary text-primary' : 'border-b-2 border-transparent text-slate-500 hover:text-slate-700'} py-4 px-2 sm:px-4 text-xs sm:text-sm font-semibold whitespace-nowrap transition-colors`}
+                        >
+                            Kelengkapan Unit
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('warranty')}
+                            className={`${activeTab === 'warranty' ? 'border-b-2 border-primary text-primary' : 'border-b-2 border-transparent text-slate-500 hover:text-slate-700'} py-4 px-2 sm:px-4 text-xs sm:text-sm font-semibold whitespace-nowrap transition-colors`}
+                        >
+                            Garansi & Pengiriman
+                        </button>
                     </nav>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-                    <div>
-                        <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-                            <span className="material-symbols-outlined text-primary">settings</span> Spesifikasi Utama
-                        </h3>
-                        <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
-                            <table className="min-w-full divide-y divide-slate-200">
-                                <tbody className="divide-y divide-slate-200">
-                                    {specs.map(([k, v]) => (
-                                        <tr key={k} className="hover:bg-slate-50">
-                                            <td className="px-6 py-4 text-sm font-medium text-slate-500 w-1/3">{k}</td>
-                                            <td className="px-6 py-4 text-sm text-slate-900">{v}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div className="space-y-6">
-                        <div>
-                            <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-                                <span className="material-symbols-outlined text-primary">featured_play_list</span> Fitur Unggulan
-                            </h3>
-                            <ul className="space-y-3">
-                                {features.map((f, i) => (
-                                    <li key={i} className="flex items-start gap-3">
-                                        <span className="material-symbols-outlined text-primary text-[20px] mt-0.5">check_circle</span>
-                                        <span className="text-sm text-slate-600">{f}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                        <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                            <div className="flex gap-3">
-                                <span className="material-symbols-outlined text-amber-600">info</span>
+                <div className="min-h-[200px]">
+                    {activeTab === 'features' && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 animate-fade-in">
+                            <div className="space-y-6">
                                 <div>
-                                    <h4 className="text-sm font-bold text-amber-800">Deskripsi Tambahan</h4>
-                                    <p className="text-sm text-amber-700 mt-1">{product.description || 'Tidak ada spesifikasi tambahan.'}</p>
+                                    <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                                        <span className="material-symbols-outlined text-primary">featured_play_list</span> Fitur Unggulan
+                                    </h3>
+                                    {parsedFeatures.length > 0 ? (
+                                        <ul className="space-y-3">
+                                            {parsedFeatures.map((f, i) => (
+                                                <li key={i} className="flex items-start gap-3">
+                                                    <span className="material-symbols-outlined text-primary text-[20px] mt-0.5">check_circle</span>
+                                                    <span className="text-sm text-slate-600 dark:text-slate-300">{f}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    ) : (
+                                        <p className="text-sm text-slate-500 dark:text-slate-400 italic">Belum ada fitur spesifik yang ditambahkan.</p>
+                                    )}
                                 </div>
+                                {product.description && (
+                                    <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/50 rounded-lg p-4">
+                                        <div className="flex gap-3">
+                                            <span className="material-symbols-outlined text-amber-600 dark:text-amber-500">info</span>
+                                            <div>
+                                                <h4 className="text-sm font-bold text-amber-800 dark:text-amber-400">Deskripsi Tambahan</h4>
+                                                <p className="text-sm text-amber-700 dark:text-amber-500 mt-1 whitespace-pre-line leading-relaxed">{product.description}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
-                    </div>
+                    )}
+
+                    {activeTab === 'inclusions' && (
+                        <div className="animate-fade-in max-w-3xl">
+                            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                                <span className="material-symbols-outlined text-primary">inventory_2</span> Daftar Barang & Kelengkapan
+                            </h3>
+                            {parsedInclusions.length > 0 ? (
+                                <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+                                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8">
+                                        {parsedInclusions.map((item, i) => (
+                                            <li key={i} className="flex items-center gap-3">
+                                                <div className="size-2 rounded-full bg-primary shrink-0"></div>
+                                                <span className="text-sm text-slate-700 dark:text-slate-300">{item}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            ) : (
+                                <p className="text-sm text-slate-500 dark:text-slate-400 italic">Daftar kelengkapan belum tersedia.</p>
+                            )}
+                        </div>
+                    )}
+
+                    {activeTab === 'warranty' && (
+                        <div className="animate-fade-in max-w-2xl">
+                            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                                <span className="material-symbols-outlined text-primary">security</span> Kebijakan Garansi & Pengiriman
+                            </h3>
+                            {parsedWarranty.length > 0 ? (
+                                <div className="space-y-4">
+                                    {parsedWarranty.map((rule, i) => (
+                                        <div key={i} className="flex gap-4 p-4 rounded-lg bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-800/20">
+                                            <span className="material-symbols-outlined text-emerald-600 dark:text-emerald-500 shrink-0">gpp_good</span>
+                                            <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{rule}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="text-sm text-slate-500 dark:text-slate-400 italic">Informasi garansi belum tersedia.</p>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
 
