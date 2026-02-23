@@ -21,6 +21,10 @@ export default function ProductDetail() {
     const [selectedImg, setSelectedImg] = useState(0)
     const [activeTab, setActiveTab] = useState('features')
 
+    // Lightbox states
+    const [isLightboxOpen, setIsLightboxOpen] = useState(false)
+    const [lightboxIndex, setLightboxIndex] = useState(0)
+
     useEffect(() => {
         async function fetchProduct() {
             setLoading(true)
@@ -118,9 +122,10 @@ export default function ProductDetail() {
                             autoplay={{ delay: 4000, disableOnInteraction: false }}
                             loop={allImages.length > 1}
                             className="w-full aspect-[4/3]"
+                            onSlideChange={(swiper) => setLightboxIndex(swiper.realIndex)}
                         >
                             {allImages.map((img, idx) => (
-                                <SwiperSlide key={idx}>
+                                <SwiperSlide key={idx} className="cursor-pointer" onClick={() => { setLightboxIndex(idx); setIsLightboxOpen(true); }}>
                                     <img src={img} alt={`${product.name} - slide ${idx + 1}`} className="w-full h-full object-cover" />
                                 </SwiperSlide>
                             ))}
@@ -130,6 +135,46 @@ export default function ProductDetail() {
                         </div>
                     </div>
                 </div>
+
+                {/* Lightbox Modal */}
+                {isLightboxOpen && (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-sm p-4">
+                        <button
+                            onClick={() => setIsLightboxOpen(false)}
+                            className="absolute top-4 right-4 sm:top-6 sm:right-6 text-white/70 hover:text-white bg-black/50 hover:bg-black/70 rounded-full p-2 transition-all z-10"
+                        >
+                            <span className="material-symbols-outlined text-3xl">close</span>
+                        </button>
+
+                        <div className="w-full max-w-5xl h-full flex items-center justify-center relative">
+                            {allImages.length > 1 && (
+                                <>
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); setLightboxIndex(prev => (prev === 0 ? allImages.length - 1 : prev - 1)) }}
+                                        className="absolute left-2 sm:left-4 text-white/70 hover:text-white bg-black/50 hover:bg-black/70 rounded-full p-3 transition-all z-10 hidden sm:block"
+                                    >
+                                        <span className="material-symbols-outlined">arrow_back_ios_new</span>
+                                    </button>
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); setLightboxIndex(prev => (prev === allImages.length - 1 ? 0 : prev + 1)) }}
+                                        className="absolute right-2 sm:right-4 text-white/70 hover:text-white bg-black/50 hover:bg-black/70 rounded-full p-3 transition-all z-10 hidden sm:block"
+                                    >
+                                        <span className="material-symbols-outlined">arrow_forward_ios</span>
+                                    </button>
+                                </>
+                            )}
+                            <img
+                                src={allImages[lightboxIndex]}
+                                alt={`${product.name} - Fullscreen ${lightboxIndex + 1}`}
+                                className="max-w-full max-h-full object-contain"
+                                onClick={(e) => e.stopPropagation()}
+                            />
+                            <div className="absolute bottom-6 left-0 right-0 text-center text-white/80 text-sm bg-gradient-to-t from-black/80 to-transparent p-4 pb-0 pointer-events-none">
+                                {lightboxIndex + 1} / {allImages.length}
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 {/* Info */}
                 <div className="lg:col-span-5 flex flex-col h-full">
