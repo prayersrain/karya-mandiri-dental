@@ -3,10 +3,8 @@ import { useSEO } from '../hooks/useSEO'
 import { useSettings } from '../context/SettingsContext'
 
 const serviceCards = [
-    { icon: 'handyman', title: 'Perbaikan Ringan', desc: 'Perbaikan kecil seperti ganti selang, seal, dan komponen ringan lainnya.', time: '1-2 Hari', price: 'Rp 500k' },
-    { icon: 'construction', title: 'Perbaikan Berat', desc: 'Perbaikan motor, sistem elektrik, dan kerusakan struktural besar.', time: '3-7 Hari', price: 'Rp 1.5jt' },
-    { icon: 'restart_alt', title: 'Overhaul/Refurbish', desc: 'Restorasi total unit lama agar tampil dan berfungsi seperti baru.', time: '14 Hari', price: 'Rp 5jt' },
-    { icon: 'assignment_turned_in', title: 'Maintenance Berkala', desc: 'Pengecekan rutin untuk mencegah kerusakan dan memperpanjang usia unit.', time: '4 Jam', price: 'Rp 750k' },
+    { icon: 'handyman', title: 'Perbaikan Ringan', desc: 'Sesuai untuk perbaikan ringan atau jasa datang ke tempat (di luar biaya pergantian sparepart).', time: '1 Hari', price: 'Rp 350rb' },
+    { icon: 'construction', title: 'Renovasi', desc: 'Termasuk pergantian cat, penggantian jok, ganti mesin, dll. Harga relatif berdasarkan survey lapangan dan harga kebutuhan sparepart.', time: 'Sesuai Survey', price: 'Rp 3jt - 15jt' },
 ]
 
 const steps = [
@@ -156,9 +154,7 @@ export default function Service() {
                                         <label className="text-sm font-semibold text-slate-700">Jenis Layanan</label>
                                         <select name="layanan" value={booking.layanan} onChange={handleChange} className="h-10 px-3 w-full rounded border border-slate-300 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
                                             <option>Perbaikan Ringan</option>
-                                            <option>Perbaikan Berat</option>
-                                            <option>Overhaul/Refurbish</option>
-                                            <option>Maintenance Berkala</option>
+                                            <option>Renovasi</option>
                                         </select>
                                     </div>
                                 </div>
