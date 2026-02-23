@@ -153,8 +153,8 @@ export default function Contact() {
                         <div className="h-full w-full rounded-xl overflow-hidden border border-slate-200 shadow-sm relative bg-slate-100">
                             <iframe
                                 title="Lokasi Karya Mandiri Dental"
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.5!2d106.96!3d-6.32!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e698fddc1f1e0e7%3A0x0!2sJatiasih%2C%20Kota%20Bekasi!5e0!3m2!1sen!2sid!4v1708912345678!5m2!1sen!2sid"
-                                width="100%" height="100%" style={{ border: 0, minHeight: '400px' }} allowFullScreen="" loading="lazy"
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d991.4281385216254!2d106.96629606962975!3d-6.30144926660326!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69931b35163c8f%3A0x2ec3ce945c0df275!2sKarya%20Mandiri%20Dental%20Service%20%26%20Equipment!5e0!3m2!1sid!2sid!4v1771862525790!5m2!1sid!2sid"
+                                width="100%" height="100%" style={{ border: 0, minHeight: '400px' }} allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"
                             ></iframe>
                             <div className="absolute bottom-4 left-4 bg-white p-3 rounded-lg shadow-lg max-w-[220px] border border-slate-200">
                                 <p className="text-xs font-bold text-slate-900">Karya Mandiri Dental</p>
