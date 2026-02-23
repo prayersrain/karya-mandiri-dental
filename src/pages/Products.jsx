@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { useSEO } from '../hooks/useSEO'
-import { useSEO } from '../hooks/useSEO'
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 import { useSettings } from '../context/SettingsContext'
