@@ -4,6 +4,8 @@ import { ThemeProvider } from './context/ThemeContext'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import WhatsAppButton from './components/WhatsAppButton'
+import ScrollToTopButton from './components/ScrollToTop'
+import RouteLoader from './components/RouteLoader'
 import Home from './pages/Home'
 import Products from './pages/Products'
 import ProductDetail from './pages/ProductDetail'
@@ -24,7 +26,7 @@ function ProtectedRoute({ children }) {
   return children
 }
 
-function ScrollToTop() {
+function ScrollReset() {
   const { pathname } = useLocation()
   useEffect(() => { window.scrollTo(0, 0) }, [pathname])
   return null
@@ -37,6 +39,7 @@ function Layout({ children }) {
       <main className="flex-grow">{children}</main>
       <Footer />
       <WhatsAppButton />
+      <ScrollToTopButton />
     </div>
   )
 }
@@ -46,7 +49,8 @@ export default function App() {
     <ThemeProvider>
       <AuthProvider>
         <BrowserRouter>
-          <ScrollToTop />
+          <RouteLoader />
+          <ScrollReset />
           <Toaster
             position="top-right"
             toastOptions={{

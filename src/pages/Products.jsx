@@ -24,6 +24,7 @@ export default function Products() {
         categoryFix: true,
         categoryPortable: true,
     })
+    const [maxPrice, setMaxPrice] = useState(100) // Representing millions
 
     useEffect(() => {
         async function fetchProducts() {
@@ -65,7 +66,10 @@ export default function Products() {
             const matchCat = (p.category === 'Dental Unit (Fix)' && filters.categoryFix) ||
                 (p.category === 'Portable Unit' && filters.categoryPortable)
 
-            return matchCond && matchCat
+            const itemPrice = p.price || 0
+            const matchPrice = itemPrice <= (maxPrice * 1000000)
+
+            return matchCond && matchCat && matchPrice
         })
 
         // 3. Sorting
@@ -80,7 +84,7 @@ export default function Products() {
 
         setFilteredProducts(result)
         setCurrentPage(1) // Reset ke halaman 1 setiap kali filter berubah
-    }, [products, searchTerm, filters, sortBy])
+    }, [products, searchTerm, filters, sortBy, maxPrice])
 
     const handleFilterChange = (key) => {
         setFilters(prev => ({ ...prev, [key]: !prev[key] }))
@@ -96,6 +100,7 @@ export default function Products() {
             categoryFix: true,
             categoryPortable: true,
         })
+        setMaxPrice(100)
     }
 
     // Formatting currency
@@ -155,11 +160,24 @@ export default function Products() {
                             type="text"
                         />
                     </div>
-                    <hr className="border-slate-100" />
+                    <hr className="border-slate-100 dark:border-slate-700" />
                     <div className="flex flex-col gap-3">
-                        <p className="text-slate-900 dark:text-white text-sm font-semibold">Rentang Harga</p>
-                        <div className="flex items-center justify-between text-xs text-slate-500 font-medium">
-                            <span>Rp 15jt</span><span>Rp 85jt</span>
+                        <div className="flex items-center justify-between">
+                            <p className="text-slate-900 dark:text-white text-sm font-semibold">Batas Harga</p>
+                            <span className="text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded-full">{maxPrice === 100 ? 'Semua Harga' : `≤ Rp ${maxPrice} Jt`}</span>
+                        </div>
+                        <input
+                            type="range"
+                            min="5"
+                            max="100"
+                            step="5"
+                            value={maxPrice}
+                            onChange={(e) => setMaxPrice(parseInt(e.target.value))}
+                            className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-primary"
+                        />
+                        <div className="flex items-center justify-between text-[11px] text-slate-400 font-medium px-1 mt-1">
+                            <span>Rp 5 Jt</span>
+                            <span>Rp 100+ Jt</span>
                         </div>
                     </div>
                     <hr className="border-slate-100" />
