@@ -15,6 +15,7 @@ import Contact from './pages/Contact'
 import Admin from './pages/Admin'
 import Login from './pages/Login'
 import { AuthProvider, useAuth } from './context/AuthContext'
+import { SettingsProvider } from './context/SettingsContext'
 import { Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 
@@ -48,33 +49,35 @@ export default function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <BrowserRouter>
-          <RouteLoader />
-          <ScrollReset />
-          <Toaster
-            position="top-right"
-            toastOptions={{
-              className: 'dark:bg-slate-800 dark:text-white border border-slate-100 dark:border-slate-700 font-medium',
-              duration: 4000
-            }}
-          />
-          <Layout>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/products/:id" element={<ProductDetail />} />
-              <Route path="/service" element={<Service />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/admin" element={
-                <ProtectedRoute>
-                  <Admin />
-                </ProtectedRoute>
-              } />
-            </Routes>
-          </Layout>
-        </BrowserRouter>
+        <SettingsProvider>
+          <BrowserRouter>
+            <RouteLoader />
+            <ScrollReset />
+            <Toaster
+              position="top-right"
+              toastOptions={{
+                className: 'dark:bg-slate-800 dark:text-white border border-slate-100 dark:border-slate-700 font-medium',
+                duration: 4000
+              }}
+            />
+            <Layout>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/products/:id" element={<ProductDetail />} />
+                <Route path="/service" element={<Service />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/admin" element={
+                  <ProtectedRoute>
+                    <Admin />
+                  </ProtectedRoute>
+                } />
+              </Routes>
+            </Layout>
+          </BrowserRouter>
+        </SettingsProvider>
       </AuthProvider>
     </ThemeProvider >
   )

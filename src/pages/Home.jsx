@@ -3,6 +3,7 @@ import { AnimateOnScroll } from '../hooks/useScrollAnimation'
 import { useSEO } from '../hooks/useSEO'
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
+import { useSettings } from '../context/SettingsContext'
 
 const services = [
     { icon: 'construction', title: 'Service & Perbaikan', desc: 'Teknisi berpengalaman menangani berbagai merek dental unit.' },
@@ -22,6 +23,9 @@ export default function Home() {
     const [products, setProducts] = useState([])
     const [testimonials, setTestimonials] = useState([])
     const [loading, setLoading] = useState(true)
+    const { settings } = useSettings()
+
+    const homeBg = settings?.home_hero || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBvws-2s0zu-9PCRtwcB3LoKb9Z-q7OqvoGDXsvGitBUVLkTA-oIYlkp7wSIFsi2tIe_5vKmWCBXtUFvIjrpz8ZZNAxRHI8QpFvhBNnv-x8A9lJpPghfF3To-8EEjFFEJa5MODbn5popk-1CMMeAB-JcPSojgP1GsN7s26PdsUmipX-IpDgJMtb-ZrIVGokORKLe1dNL_YrO9uS7-_JDowjeY82YceVuPSc_WZcvjGRs65at5rIDdmBdXbJXkG4Z_KRIdwStMdEVK99'
 
     useEffect(() => {
         async function fetchData() {
@@ -68,7 +72,7 @@ export default function Home() {
             <section className="relative px-4 py-8 md:px-10 md:py-12 lg:py-16">
                 <div className="max-w-7xl mx-auto">
                     <div className="flex min-h-[480px] flex-col gap-6 bg-cover bg-center bg-no-repeat rounded-xl items-center justify-center p-8 text-center relative overflow-hidden"
-                        style={{ backgroundImage: "linear-gradient(rgba(19, 109, 236, 0.85), rgba(16, 24, 34, 0.7)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuBvws-2s0zu-9PCRtwcB3LoKb9Z-q7OqvoGDXsvGitBUVLkTA-oIYlkp7wSIFsi2tIe_5vKmWCBXtUFvIjrpz8ZZNAxRHI8QpFvhBNnv-x8A9lJpPghfF3To-8EEjFFEJa5MODbn5popk-1CMMeAB-JcPSojgP1GsN7s26PdsUmipX-IpDgJMtb-ZrIVGokORKLe1dNL_YrO9uS7-_JDowjeY82YceVuPSc_WZcvjGRs65at5rIDdmBdXbJXkG4Z_KRIdwStMdEVK99')" }}>
+                        style={{ backgroundImage: `linear-gradient(rgba(19, 109, 236, 0.85), rgba(16, 24, 34, 0.7)), url('${homeBg}')` }}>
                         <span className="inline-block rounded-full bg-white/20 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-white backdrop-blur-sm border border-white/20">Solusi Dental Unit Terpercaya</span>
                         <h1 className="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight max-w-3xl">KARYA MANDIRI DENTAL</h1>
                         <p className="text-white/90 text-base md:text-lg leading-relaxed max-w-xl mx-auto">Spesialis service, refurbish, dan jual-beli dental unit berkualitas untuk klinik gigi profesional.</p>

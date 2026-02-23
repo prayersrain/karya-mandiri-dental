@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom'
 import { useSEO } from '../hooks/useSEO'
+import { useSEO } from '../hooks/useSEO'
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
+import { useSettings } from '../context/SettingsContext'
 
 export default function Products() {
     useSEO({ title: 'Katalog Produk', description: 'Temukan dental unit berkualitas, refurbished dan second original dengan harga terbaik.' })
@@ -9,6 +11,9 @@ export default function Products() {
     const [products, setProducts] = useState([])
     const [filteredProducts, setFilteredProducts] = useState([])
     const [loading, setLoading] = useState(true)
+    const { settings } = useSettings()
+
+    const heroBg = settings?.products_hero || 'https://lh3.googleusercontent.com/aida-public/AB6AXuAwSJLqsGipvHZI6YI2rfEMj1rjsUKm59C7hPdw3yfSr_auu46cOrnU9m3rczTbS965C4kOiote1lMpXG2jBWgN9buW64tr1QrAxE0NzBFxd4YyRaznGe_pR1cuSKGQQcHyenH-E2KZqOV9RVWjwn63i2dBZPNYmSMOy-5dhbzEyVBCa7q3M3lSFlTO7ZeD_ep5nUejtJijm7bdRonUajdUoUyMq001fJSin0Ge2BMOdBqWpTwk4tEiZC5HWntf44nW7ReqHX6Xen6Q'
 
     // Pagination states
     const [currentPage, setCurrentPage] = useState(1)
@@ -131,7 +136,7 @@ export default function Products() {
             <section className="max-w-[1440px] mx-auto p-4 md:p-6 lg:p-8">
                 <div className="rounded-xl overflow-hidden relative">
                     <div className="flex min-h-[320px] md:min-h-[400px] flex-col gap-6 bg-cover bg-center bg-no-repeat items-center justify-center p-6 text-center"
-                        style={{ backgroundImage: "linear-gradient(rgba(19, 109, 236, 0.85), rgba(16, 24, 34, 0.7)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuAwSJLqsGipvHZI6YI2rfEMj1rjsUKm59C7hPdw3yfSr_auu46cOrnU9m3rczTbS965C4kOiote1lMpXG2jBWgN9buW64tr1QrAxE0NzBFxd4YyRaznGe_pR1cuSKGQQcHyenH-E2KZqOV9RVWjwn63i2dBZPNYmSMOy-5dhbzEyVBCa7q3M3lSFlTO7ZeD_ep5nUejtJijm7bdRonUajdUoUyMq001fJSin0Ge2BMOdBqWpTwk4tEiZC5HWntf44nW7ReqHX6Xen6Q')" }}>
+                        style={{ backgroundImage: `linear-gradient(rgba(19, 109, 236, 0.85), rgba(16, 24, 34, 0.7)), url('${heroBg}')` }}>
                         <span className="text-white/80 uppercase tracking-widest text-xs font-bold">Kualitas Terbaik</span>
                         <h1 className="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight">KATALOG DENTAL UNIT</h1>
                         <p className="text-white/90 text-base md:text-lg font-medium leading-relaxed max-w-lg mx-auto">

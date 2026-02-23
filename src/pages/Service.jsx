@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
+import { useSettings } from '../context/SettingsContext'
 
 const serviceCards = [
     { icon: 'handyman', title: 'Perbaikan Ringan', desc: 'Perbaikan kecil seperti ganti selang, seal, dan komponen ringan lainnya.', time: '1-2 Hari', price: 'Rp 500k' },
@@ -26,6 +27,9 @@ export default function Service() {
     const [booking, setBooking] = useState({
         namaKlinik: '', noWa: '', alamat: '', merek: '', layanan: 'Perbaikan Ringan', keluhan: '', jadwal: ''
     })
+    const { settings } = useSettings()
+
+    const heroBg = settings?.service_hero || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBvws-2s0zu-9PCRtwcB3LoKb9Z-q7OqvoGDXsvGitBUVLkTA-oIYlkp7wSIFsi2tIe_5vKmWCBXtUFvIjrpz8ZZNAxRHI8QpFvhBNnv-x8A9lJpPghfF3To-8EEjFFEJa5MODbn5popk-1CMMeAB-JcPSojgP1GsN7s26PdsUmipX-IpDgJMtb-ZrIVGokORKLe1dNL_YrO9uS7-_JDowjeY82YceVuPSc_WZcvjGRs65at5rIDdmBdXbJXkG4Z_KRIdwStMdEVK99'
     useSEO({ title: 'Layanan Service', description: 'Layanan service, perbaikan, dan maintenance dental unit profesional. Booking teknisi sekarang!' })
 
     const handleChange = (e) => setBooking({ ...booking, [e.target.name]: e.target.value })
@@ -47,7 +51,7 @@ export default function Service() {
         <>
             {/* Hero */}
             <div className="relative w-full bg-slate-900">
-                <div className="absolute inset-0 w-full h-full bg-cover bg-center opacity-40 mix-blend-overlay" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBvws-2s0zu-9PCRtwcB3LoKb9Z-q7OqvoGDXsvGitBUVLkTA-oIYlkp7wSIFsi2tIe_5vKmWCBXtUFvIjrpz8ZZNAxRHI8QpFvhBNnv-x8A9lJpPghfF3To-8EEjFFEJa5MODbn5popk-1CMMeAB-JcPSojgP1GsN7s26PdsUmipX-IpDgJMtb-ZrIVGokORKLe1dNL_YrO9uS7-_JDowjeY82YceVuPSc_WZcvjGRs65at5rIDdmBdXbJXkG4Z_KRIdwStMdEVK99')" }}></div>
+                <div className="absolute inset-0 w-full h-full bg-cover bg-center opacity-40 mix-blend-overlay" style={{ backgroundImage: `url('${heroBg}')` }}></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent"></div>
                 <div className="relative max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32 flex flex-col items-center text-center">
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/20 border border-primary/30 text-blue-100 text-xs font-semibold tracking-wide uppercase mb-6 backdrop-blur-sm">

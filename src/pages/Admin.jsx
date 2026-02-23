@@ -8,6 +8,7 @@ export default function Admin() {
     const [products, setProducts] = useState([])
     const [messages, setMessages] = useState([])
     const [testimonials, setTestimonials] = useState([])
+    const [settings, setSettings] = useState([])
     const [loading, setLoading] = useState(true)
     const [form, setForm] = useState({
         name: '', brand: 'Belmont', price: '', condition: 'Refurbished', category: 'Dental Unit (Fix)', description: '', image_url: '', gallery_urls: '',
@@ -28,6 +29,8 @@ export default function Admin() {
             fetchMessages()
         } else if (activeTab === 'testimonials') {
             fetchTestimonials()
+        } else if (activeTab === 'settings') {
+            fetchSettings()
         }
     }, [activeTab])
 
@@ -49,6 +52,13 @@ export default function Admin() {
         setLoading(true)
         const { data, error } = await supabase.from('testimonials').select('*').order('created_at', { ascending: false })
         if (data) setTestimonials(data)
+        setLoading(false)
+    }
+
+    async function fetchSettings() {
+        setLoading(true)
+        const { data, error } = await supabase.from('site_settings').select('*').order('id')
+        if (data) setSettings(data)
         setLoading(false)
     }
 
@@ -95,6 +105,22 @@ export default function Admin() {
             const file = e.target.files[0]
             const publicUrl = await uploadFile(file)
             if (publicUrl) setTestiForm(prev => ({ ...prev, image_url: publicUrl }))
+        } finally {
+            setUploading(false)
+        }
+    }
+
+    const handleSettingImageUpload = async (id, e) => {
+        try {
+            if (!e.target.files || e.target.files.length === 0) return
+            setUploading(true)
+            const file = e.target.files[0]
+            const publicUrl = await uploadFile(file)
+            if (publicUrl) {
+                await supabase.from('site_settings').update({ image_url: publicUrl }).eq('id', id)
+                toast.success('Gambar berhasil diperbarui!')
+                fetchSettings()
+            }
         } finally {
             setUploading(false)
         }
@@ -232,7 +258,33 @@ export default function Admin() {
                 >
                     Kelola Testimoni
                 </button>
+                <button
+                    onClick={() => setActiveTab('settings')}
+                    className={`pb-4 px-2 font-bold transition-colors ${activeTab === 'settings' ? 'border-b-2 border-primary text-primary' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300'}`}
+                >
+                    Pengaturan Tampilan
+                </button>
             </div>
+
+            {activeTab === 'settings' && (
+                <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm mb-8">
+                    <h2 className="text-xl font-bold mb-6 text-slate-900 dark:text-white">Pengaturan Gambar Latar (Hero)</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {settings.map(s => (
+                            <div key={s.id} className="border border-slate-200 dark:border-slate-700 p-4 rounded-xl flex flex-col gap-3">
+                                <h3 className="font-bold text-slate-900 dark:text-white capitalize">{s.name}</h3>
+                                <div className="w-full h-40 bg-slate-100 dark:bg-slate-900 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
+                                    <img src={s.image_url} alt={s.name} className="w-full h-full object-cover" />
+                                </div>
+                                <div className="mt-auto pt-2 flex flex-col gap-2">
+                                    <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400">Upload Gambar Baru:</label>
+                                    <input type="file" accept="image/*" onChange={(e) => handleSettingImageUpload(s.id, e)} disabled={uploading} className="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:font-semibold file:bg-primary file:text-white hover:file:bg-primary/90 cursor-pointer dark:text-slate-300" />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             {activeTab === 'products' && (
                 <>

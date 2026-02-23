@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useSEO } from '../hooks/useSEO'
+import { useSettings } from '../context/SettingsContext'
 
 const stats = [
     { value: '500+', label: 'Unit Tertangani' },
@@ -15,14 +16,17 @@ const team = [
 ]
 
 export default function About() {
+    const { settings } = useSettings()
     useSEO({ title: 'Tentang Kami', description: 'Karya Mandiri Dental - Mitra terpercaya untuk solusi dental unit profesional di Indonesia sejak 2010.' })
+
+    const heroBg = settings?.about_hero || 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
 
     return (
         <>
             {/* Hero */}
             <section className="relative flex min-h-[480px] flex-col items-center justify-center gap-6 overflow-hidden px-4 text-center">
                 <div className="absolute inset-0 z-0">
-                    <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBvws-2s0zu-9PCRtwcB3LoKb9Z-q7OqvoGDXsvGitBUVLkTA-oIYlkp7wSIFsi2tIe_5vKmWCBXtUFvIjrpz8ZZNAxRHI8QpFvhBNnv-x8A9lJpPghfF3To-8EEjFFEJa5MODbn5popk-1CMMeAB-JcPSojgP1GsN7s26PdsUmipX-IpDgJMtb-ZrIVGokORKLe1dNL_YrO9uS7-_JDowjeY82YceVuPSc_WZcvjGRs65at5rIDdmBdXbJXkG4Z_KRIdwStMdEVK99')" }}></div>
+                    <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${heroBg}')` }}></div>
                     <div className="absolute inset-0 bg-gradient-to-b from-slate-900/80 to-primary/40"></div>
                 </div>
                 <div className="relative z-10 max-w-3xl">

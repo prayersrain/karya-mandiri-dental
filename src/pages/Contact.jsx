@@ -2,10 +2,15 @@ import { useState } from 'react'
 import { useSEO } from '../hooks/useSEO'
 import { supabase } from '../lib/supabase'
 import toast from 'react-hot-toast'
+import { useSettings } from '../context/SettingsContext'
 
 export default function Contact() {
     const [form, setForm] = useState({ nama: '', email: '', wa: '', subjek: 'Pertanyaan Umum', pesan: '' })
     const [status, setStatus] = useState('idle') // idle, loading, success, error
+    const { settings } = useSettings()
+
+    const heroBg = settings?.contact_hero || 'https://images.unsplash.com/photo-1516328318414-39645116f3af?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+
     useSEO({ title: 'Hubungi Kami', description: 'Hubungi Karya Mandiri Dental untuk konsultasi dental unit. Jl. Raya Pondok Benda No.26, Jatiasih, Bekasi.' })
 
     const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
@@ -49,7 +54,7 @@ export default function Contact() {
             {/* Hero */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
                 <div className="flex min-h-[320px] flex-col gap-6 bg-cover bg-center bg-no-repeat rounded-xl items-center justify-center p-4 relative overflow-hidden"
-                    style={{ backgroundImage: "linear-gradient(rgba(16, 24, 34, 0.7), rgba(19, 109, 236, 0.4)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuAJAOnhkou0TswbObjQImmTm5CoF7NuJ2zungyQQnR0ex-Zzo4cXOtIEB59RCeVNDF6C1FPQMRTkWan0-91oHJ8GVK3IAvPq19URvO2-xne1qJi72ZKGO_T7J9LUc6uVVxhRjl6xMb5_Y6JH1xb0Yv93XZMOTpLGZSYG-JJ2fOuwc0Uxr2MCJod3w1JWAThfJL0UU5Likpvv269e8EFD5LbPpj4hJrKQ228xVXa_RH9sOdSKVFCuDcltbeKli4hJzYUqmJ3A9rFwRv2')" }}>
+                    style={{ backgroundImage: `linear-gradient(rgba(16, 24, 34, 0.7), rgba(19, 109, 236, 0.4)), url('${heroBg}')` }}>
                     <div className="flex flex-col gap-2 text-center relative z-10">
                         <h1 className="text-white text-4xl font-black leading-tight tracking-[-0.033em] sm:text-5xl drop-shadow-lg">HUBUNGI KAMI</h1>
                         <p className="text-slate-100 text-sm font-medium sm:text-lg max-w-lg mx-auto drop-shadow-md">Solusi terbaik untuk unit gigi Anda. Kami siap membantu kebutuhan klinik Anda.</p>
