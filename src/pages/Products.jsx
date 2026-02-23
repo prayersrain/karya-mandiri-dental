@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 import { useSettings } from '../context/SettingsContext'
 
+const ALL_BRANDS = ['Belmont', 'Gnatus', 'Yoshida', 'Smic', 'Roson', 'Cavo', 'Andini', 'Joinchamp', 'Victor', 'MobiDent', 'Lainnya']
+
 export default function Products() {
     useSEO({ title: 'Katalog Produk', description: 'Temukan dental unit berkualitas, refurbished dan second original dengan harga terbaik.' })
 
@@ -27,6 +29,7 @@ export default function Products() {
         conditionBaru: true,
         categoryFix: true,
         categoryPortable: true,
+        ...ALL_BRANDS.reduce((acc, brand) => ({ ...acc, [`brand_${brand}`]: true }), {})
     })
     const [maxPrice, setMaxPrice] = useState(100) // Representing millions
 
@@ -70,10 +73,13 @@ export default function Products() {
             const matchCat = (p.category === 'Dental Unit (Fix)' && filters.categoryFix) ||
                 (p.category === 'Portable Unit' && filters.categoryPortable)
 
+            const matchBrand = ALL_BRANDS.some(brand => p.brand === brand && filters[`brand_${brand}`]) ||
+                (!ALL_BRANDS.includes(p.brand) && filters['brand_Lainnya'])
+
             const itemPrice = p.price || 0
             const matchPrice = itemPrice <= (maxPrice * 1000000)
 
-            return matchCond && matchCat && matchPrice
+            return matchCond && matchCat && matchBrand && matchPrice
         })
 
         // 3. Sorting
@@ -103,6 +109,7 @@ export default function Products() {
             conditionBaru: true,
             categoryFix: true,
             categoryPortable: true,
+            ...ALL_BRANDS.reduce((acc, brand) => ({ ...acc, [`brand_${brand}`]: true }), {})
         })
         setMaxPrice(100)
     }
@@ -229,9 +236,9 @@ export default function Products() {
                             <span className="material-symbols-outlined text-slate-400 transition-transform group-open:rotate-180 text-[20px]">expand_more</span>
                         </summary>
                         <div className="flex flex-col gap-2.5 pt-2 pb-1">
-                            {['Gnatus', 'Belmont', 'Osada', 'Yoshida', 'Morita'].map(b => (
+                            {ALL_BRANDS.map(b => (
                                 <label key={b} className="flex items-center gap-3 cursor-pointer">
-                                    <input className="rounded border-slate-300 text-primary focus:ring-primary h-4 w-4" type="checkbox" />
+                                    <input checked={filters[`brand_${b}`]} onChange={() => handleFilterChange(`brand_${b}`)} className="rounded border-slate-300 text-primary focus:ring-primary h-4 w-4" type="checkbox" />
                                     <span className="text-slate-600 dark:text-slate-300 text-sm">{b}</span>
                                 </label>
                             ))}
