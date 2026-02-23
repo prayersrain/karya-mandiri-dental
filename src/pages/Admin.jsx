@@ -2,6 +2,13 @@ import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 import toast from 'react-hot-toast'
 
+const QUICKS = {
+    description: ['Kondisi Bagus', 'Mesin Normal', 'Ready Siap Pakai', 'Cat Mulus', 'Suara Halus', 'Fungsi 100% Normal'],
+    features: ['Lampu Sensor LED', 'Selang Handpiece 4 Hole', 'Jok Free Custom Warna', 'Motor Elektrik Silent', 'Touchpad Control Panel', 'Program Memory Posisi'],
+    inclusions: ['Handpiece Highspeed', 'Handpiece Lowspeed Set', 'Kompresor Oiless Silent', 'Scaler Ultrasonic', 'Light Cure LED', 'Kamera Intraoral + Monitor', 'Pipa & Kabel Instalasi'],
+    warranty: ['6 Bulan Full', '1 Tahun (Kecuali Handpiece)', 'Garansi Service 3 Bulan', 'Packaging Pallet Kayu (Kirim Luar Kota)']
+}
+
 export default function Admin() {
     const [activeTab, setActiveTab] = useState('products') // 'products' | 'messages' | 'testimonials'
 
@@ -64,6 +71,14 @@ export default function Admin() {
 
     const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
     const handleTestiChange = (e) => setTestiForm({ ...testiForm, [e.target.name]: e.target.type === 'checkbox' ? e.target.checked : e.target.value })
+
+    const appendText = (field, text) => {
+        setForm(prev => {
+            const current = (prev[field] || '').trim()
+            const newValue = current ? current + '\n' + text : text
+            return { ...prev, [field]: newValue }
+        })
+    }
 
     const uploadFile = async (file) => {
         const fileExt = file.name.split('.').pop()
@@ -349,24 +364,41 @@ export default function Admin() {
                             </div>
                             <div className="md:col-span-2">
                                 <label className="block text-sm font-semibold mb-1 dark:text-slate-300">Deskripsi Singkat Tambahan</label>
+                                <div className="flex flex-wrap gap-1.5 mb-2">
+                                    {QUICKS.description.map(txt => (
+                                        <button type="button" key={txt} onClick={() => appendText('description', txt)} className="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-600 px-2 py-1 rounded border border-slate-200 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors">+ {txt}</button>
+                                    ))}
+                                </div>
                                 <textarea name="description" value={form.description || ''} onChange={handleChange} className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900 dark:border-slate-600 dark:text-white text-sm" rows="2"></textarea>
                             </div>
                             <div className="md:col-span-2">
                                 <label className="block text-sm font-semibold mb-1 dark:text-slate-300">Fitur Unggulan & Spesifikasi Khusus</label>
-                                <p className="text-xs text-slate-500 mb-2">Gunakan Enter (Baris Baru) untuk memisahkan setiap poin/bullet-list.</p>
+                                <div className="flex flex-wrap gap-1.5 mb-2">
+                                    {QUICKS.features.map(txt => (
+                                        <button type="button" key={txt} onClick={() => appendText('features', txt)} className="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-600 px-2 py-1 rounded border border-slate-200 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors">+ {txt}</button>
+                                    ))}
+                                </div>
                                 <textarea name="features" value={form.features || ''} onChange={handleChange} className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900 dark:border-slate-600 dark:text-white text-sm" rows="3"></textarea>
                             </div>
                             <div className="md:col-span-1">
                                 <label className="block text-sm font-semibold mb-1 dark:text-slate-300">Kelengkapan Unit</label>
-                                <p className="text-xs text-slate-500 mb-2">Daftar part bawaan (Gunakan baris baru).</p>
+                                <div className="flex flex-wrap gap-1.5 mb-2">
+                                    {QUICKS.inclusions.map(txt => (
+                                        <button type="button" key={txt} onClick={() => appendText('inclusions', txt)} className="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-600 px-2 py-1 rounded border border-slate-200 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors">+ {txt}</button>
+                                    ))}
+                                </div>
                                 <textarea name="inclusions" value={form.inclusions || ''} onChange={handleChange} className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900 dark:border-slate-600 dark:text-white text-sm" rows="3"></textarea>
                             </div>
                             <div className="md:col-span-1">
                                 <label className="block text-sm font-semibold mb-1 dark:text-slate-300">Info Garansi</label>
-                                <p className="text-xs text-slate-500 mb-2">Penjelasan klaim / durasi (Gunakan baris baru).</p>
+                                <div className="flex flex-wrap gap-1.5 mb-2">
+                                    {QUICKS.warranty.map(txt => (
+                                        <button type="button" key={txt} onClick={() => appendText('warranty', txt)} className="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-600 px-2 py-1 rounded border border-slate-200 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors">+ {txt}</button>
+                                    ))}
+                                </div>
                                 <textarea name="warranty" value={form.warranty || ''} onChange={handleChange} className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900 dark:border-slate-600 dark:text-white text-sm" rows="3"></textarea>
                             </div>
-                            <div className="md:col-span-2 flex gap-3">
+                            <div className="md:col-span-2 flex gap-3 mt-2">
                                 <button type="submit" disabled={loading} className="bg-primary text-white px-6 py-2 rounded-lg font-bold hover:bg-primary/90 disabled:opacity-50">
                                     {loading ? 'Menyimpan...' : (editingId ? 'Simpan Perubahan' : 'Tambah Produk')}
                                 </button>
