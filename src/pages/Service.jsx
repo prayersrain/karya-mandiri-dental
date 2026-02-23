@@ -74,9 +74,9 @@ export default function Service() {
                         <h2 className="text-3xl font-bold text-slate-900 mb-4">Jenis Layanan</h2>
                         <p className="text-slate-600 max-w-2xl mx-auto">Solusi lengkap yang disesuaikan dengan kebutuhan spesifik peralatan Anda.</p>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="flex flex-col sm:flex-row justify-center gap-6 max-w-4xl mx-auto">
                         {serviceCards.map((s, i) => (
-                            <div key={i} className="group bg-slate-50 border border-slate-200 rounded-xl p-6 hover:shadow-xl hover:shadow-primary/5 hover:border-primary/30 transition-all duration-300 flex flex-col">
+                            <div key={i} className="group bg-slate-50 border border-slate-200 rounded-xl p-6 hover:shadow-xl hover:shadow-primary/5 hover:border-primary/30 transition-all duration-300 flex flex-col flex-1">
                                 <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-primary mb-5 group-hover:scale-110 transition-transform">
                                     <span className="material-symbols-outlined text-2xl">{s.icon}</span>
                                 </div>
