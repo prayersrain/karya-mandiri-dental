@@ -10,7 +10,7 @@ export default function Admin() {
     const [testimonials, setTestimonials] = useState([])
     const [loading, setLoading] = useState(true)
     const [form, setForm] = useState({
-        name: '', brand: '', price: '', condition: 'Refurbished', category: 'Dental Unit (Fix)', description: '', image_url: '', gallery_urls: '',
+        name: '', brand: 'Belmont', price: '', condition: 'Refurbished', category: 'Dental Unit (Fix)', description: '', image_url: '', gallery_urls: '',
         features: '', inclusions: '', warranty: ''
     })
     const [editingId, setEditingId] = useState(null)
@@ -245,7 +245,19 @@ export default function Admin() {
                             </div>
                             <div>
                                 <label className="block text-sm font-semibold mb-1 dark:text-slate-300">Merek (Brand)</label>
-                                <input name="brand" value={form.brand} onChange={handleChange} required className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900 dark:border-slate-600 dark:text-white" />
+                                <select name="brand" value={form.brand} onChange={handleChange} required className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900 dark:border-slate-600 dark:text-white">
+                                    <option>Belmont</option>
+                                    <option>Gnatus</option>
+                                    <option>Yoshida</option>
+                                    <option>Smic</option>
+                                    <option>Roson</option>
+                                    <option>Cavo</option>
+                                    <option>Andini</option>
+                                    <option>Joinchamp</option>
+                                    <option>Victor</option>
+                                    <option>MobiDent</option>
+                                    <option>Lainnya</option>
+                                </select>
                             </div>
                             <div>
                                 <label className="block text-sm font-semibold mb-1 dark:text-slate-300">Harga (Rp)</label>
@@ -307,7 +319,7 @@ export default function Admin() {
                                     {loading ? 'Menyimpan...' : (editingId ? 'Simpan Perubahan' : 'Tambah Produk')}
                                 </button>
                                 {editingId && (
-                                    <button type="button" onClick={() => { setEditingId(null); setForm({ name: '', brand: '', price: '', condition: 'Refurbished', category: 'Dental Unit (Fix)', description: '', image_url: '', gallery_urls: '', features: '', inclusions: '', warranty: '' }) }} className="bg-slate-200 text-slate-700 px-6 py-2 rounded-lg font-bold hover:bg-slate-300">
+                                    <button type="button" onClick={() => { setEditingId(null); setForm({ name: '', brand: 'Belmont', price: '', condition: 'Refurbished', category: 'Dental Unit (Fix)', description: '', image_url: '', gallery_urls: '', features: '', inclusions: '', warranty: '' }) }} className="bg-slate-200 text-slate-700 px-6 py-2 rounded-lg font-bold hover:bg-slate-300">
                                         Batal Edit
                                     </button>
                                 )}
