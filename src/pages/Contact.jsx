@@ -82,8 +82,8 @@ export default function Contact() {
                                 <span className="material-symbols-outlined">{c.icon}</span>
                             </div>
                             <div>
-                                <h3 className="text-lg font-bold text-slate-900 mb-1">{c.title}</h3>
-                                {c.lines.map((l, j) => <p key={j} className="text-slate-500 text-sm">{l}</p>)}
+                                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">{c.title}</h3>
+                                {c.lines.map((l, j) => <p key={j} className="text-slate-500 dark:text-slate-400 text-sm">{l}</p>)}
                             </div>
                         </div>
                     ))}
