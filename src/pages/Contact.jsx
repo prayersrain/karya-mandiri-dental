@@ -13,7 +13,14 @@ export default function Contact() {
 
     useSEO({ title: 'Hubungi Kami', description: 'Hubungi Karya Mandiri Dental untuk konsultasi dental unit. Jl. Raya Pondok Benda No.26, Jatiasih, Bekasi.' })
 
-    const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        if (name === 'wa') {
+            setForm({ ...form, [name]: value.replace(/\D/g, '') })
+        } else {
+            setForm({ ...form, [name]: value })
+        }
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -108,22 +115,22 @@ export default function Contact() {
                                 )}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                     <div className="flex flex-col gap-2">
-                                        <label className="text-sm font-semibold text-slate-700">Nama Lengkap</label>
-                                        <input name="nama" value={form.nama} onChange={handleChange} required className="w-full h-11 rounded-lg border border-slate-300 bg-white px-3 text-slate-900 focus:ring-primary focus:border-primary disabled:opacity-50" placeholder="Nama Anda" type="text" disabled={status === 'loading'} />
+                                        <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Nama Lengkap</label>
+                                        <input name="nama" value={form.nama} onChange={handleChange} required className="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 text-slate-900 dark:text-white focus:ring-primary focus:border-primary disabled:opacity-50" placeholder="Nama Anda" type="text" disabled={status === 'loading'} />
                                     </div>
                                     <div className="flex flex-col gap-2">
-                                        <label className="text-sm font-semibold text-slate-700">Alamat Email (Opsional)</label>
-                                        <input name="email" value={form.email} onChange={handleChange} className="w-full h-11 rounded-lg border border-slate-300 bg-white px-3 text-slate-900 focus:ring-primary focus:border-primary disabled:opacity-50" placeholder="nama@email.com" type="email" disabled={status === 'loading'} />
+                                        <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Alamat Email (Opsional)</label>
+                                        <input name="email" value={form.email} onChange={handleChange} className="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 text-slate-900 dark:text-white focus:ring-primary focus:border-primary disabled:opacity-50" placeholder="nama@email.com" type="email" disabled={status === 'loading'} />
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                     <div className="flex flex-col gap-2">
-                                        <label className="text-sm font-semibold text-slate-700">Nomor Telepon / WA</label>
-                                        <input name="wa" value={form.wa} onChange={handleChange} required className="w-full h-11 rounded-lg border border-slate-300 bg-white px-3 text-slate-900 focus:ring-primary focus:border-primary disabled:opacity-50" placeholder="0815..." type="tel" disabled={status === 'loading'} />
+                                        <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Nomor Telepon / WA</label>
+                                        <input name="wa" value={form.wa} onChange={handleChange} required className="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 text-slate-900 dark:text-white focus:ring-primary focus:border-primary disabled:opacity-50" placeholder="081511249424" type="tel" disabled={status === 'loading'} />
                                     </div>
                                     <div className="flex flex-col gap-2">
-                                        <label className="text-sm font-semibold text-slate-700">Subjek</label>
-                                        <select name="subjek" value={form.subjek} onChange={handleChange} className="w-full h-11 rounded-lg border border-slate-300 bg-white px-3 text-slate-900 focus:ring-primary focus:border-primary disabled:opacity-50" disabled={status === 'loading'}>
+                                        <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Subjek</label>
+                                        <select name="subjek" value={form.subjek} onChange={handleChange} className="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 text-slate-900 dark:text-white focus:ring-primary focus:border-primary disabled:opacity-50" disabled={status === 'loading'}>
                                             <option>Pertanyaan Umum</option>
                                             <option>Permintaan Penawaran</option>
                                             <option>Jadwal Service</option>
@@ -132,8 +139,8 @@ export default function Contact() {
                                     </div>
                                 </div>
                                 <div className="flex flex-col gap-2">
-                                    <label className="text-sm font-semibold text-slate-700">Pesan</label>
-                                    <textarea name="pesan" value={form.pesan} onChange={handleChange} required className="w-full rounded-lg border border-slate-300 bg-white p-3 text-slate-900 focus:ring-primary focus:border-primary resize-none disabled:opacity-50" placeholder="Tuliskan pesan Anda di sini..." rows="5" disabled={status === 'loading'}></textarea>
+                                    <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Pesan</label>
+                                    <textarea name="pesan" value={form.pesan} onChange={handleChange} required className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-3 text-slate-900 dark:text-white focus:ring-primary focus:border-primary resize-none disabled:opacity-50" placeholder="Tuliskan pesan Anda di sini..." rows="5" disabled={status === 'loading'}></textarea>
                                 </div>
                                 <div className="flex flex-col sm:flex-row gap-3 mt-2">
                                     <button disabled={status === 'loading'} className="h-12 flex-1 px-8 rounded-lg bg-primary hover:bg-primary/90 text-white font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2 shadow-sm disabled:opacity-70" type="submit">

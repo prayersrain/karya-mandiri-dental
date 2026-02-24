@@ -30,7 +30,14 @@ export default function Service() {
     const heroBg = settings?.service_hero || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBvws-2s0zu-9PCRtwcB3LoKb9Z-q7OqvoGDXsvGitBUVLkTA-oIYlkp7wSIFsi2tIe_5vKmWCBXtUFvIjrpz8ZZNAxRHI8QpFvhBNnv-x8A9lJpPghfF3To-8EEjFFEJa5MODbn5popk-1CMMeAB-JcPSojgP1GsN7s26PdsUmipX-IpDgJMtb-ZrIVGokORKLe1dNL_YrO9uS7-_JDowjeY82YceVuPSc_WZcvjGRs65at5rIDdmBdXbJXkG4Z_KRIdwStMdEVK99'
     useSEO({ title: 'Layanan Service', description: 'Layanan service, perbaikan, dan maintenance dental unit profesional. Booking teknisi sekarang!' })
 
-    const handleChange = (e) => setBooking({ ...booking, [e.target.name]: e.target.value })
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        if (name === 'noWa') {
+            setBooking({ ...booking, [name]: value.replace(/\D/g, '') })
+        } else {
+            setBooking({ ...booking, [name]: value })
+        }
+    }
 
     const handleBooking = (e) => {
         e.preventDefault()
@@ -118,9 +125,9 @@ export default function Service() {
             </div>
 
             {/* Booking Form */}
-            <div className="w-full bg-background-light py-16 sm:py-24" id="booking-form">
+            <div className="w-full bg-slate-50 dark:bg-slate-900 py-16 sm:py-24 transition-colors" id="booking-form">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6">
-                    <div className="bg-white rounded-xl shadow-xl shadow-slate-200/50 overflow-hidden border border-slate-100">
+                    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-slate-200/50 dark:shadow-none overflow-hidden border border-slate-100 dark:border-slate-700">
                         <div className="bg-primary px-8 py-6">
                             <h2 className="text-2xl font-bold text-white flex items-center gap-3">
                                 <span className="material-symbols-outlined">calendar_month</span> Booking Service
@@ -129,42 +136,42 @@ export default function Service() {
                         </div>
                         <form className="p-8 grid grid-cols-1 md:grid-cols-2 gap-8" onSubmit={handleBooking}>
                             <div className="flex flex-col gap-6">
-                                <h3 className="text-sm uppercase tracking-wider font-bold text-slate-400 mb-2 border-b border-slate-100 pb-2">Informasi Klinik</h3>
+                                <h3 className="text-sm uppercase tracking-wider font-bold text-slate-400 dark:text-slate-500 mb-2 border-b border-slate-100 dark:border-slate-700 pb-2">Informasi Klinik</h3>
                                 <div className="flex flex-col gap-1.5">
-                                    <label className="text-sm font-semibold text-slate-700">Nama Klinik / Dokter</label>
-                                    <input name="namaKlinik" value={booking.namaKlinik} onChange={handleChange} required className="h-10 px-3 w-full rounded border border-slate-300 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none" placeholder="e.g. Klinik Gigi Sehat" type="text" />
+                                    <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Nama Klinik / Dokter</label>
+                                    <input name="namaKlinik" value={booking.namaKlinik} onChange={handleChange} required className="h-10 px-3 w-full rounded border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none" placeholder="e.g. Klinik Gigi Sehat" type="text" />
                                 </div>
                                 <div className="flex flex-col gap-1.5">
-                                    <label className="text-sm font-semibold text-slate-700">No. WhatsApp</label>
-                                    <input name="noWa" value={booking.noWa} onChange={handleChange} required className="h-10 px-3 w-full rounded border border-slate-300 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none" placeholder="e.g. 0815-1124-9424" type="tel" />
+                                    <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">No. WhatsApp</label>
+                                    <input name="noWa" value={booking.noWa} onChange={handleChange} required className="h-10 px-3 w-full rounded border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none" placeholder="e.g. 081511249424" type="tel" />
                                 </div>
                                 <div className="flex flex-col gap-1.5">
-                                    <label className="text-sm font-semibold text-slate-700">Alamat Lengkap</label>
-                                    <textarea name="alamat" value={booking.alamat} onChange={handleChange} required className="p-3 w-full rounded border border-slate-300 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none" placeholder="Alamat praktik..." rows="4"></textarea>
+                                    <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Alamat Lengkap</label>
+                                    <textarea name="alamat" value={booking.alamat} onChange={handleChange} required className="p-3 w-full rounded border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none" placeholder="Alamat praktik..." rows="4"></textarea>
                                 </div>
                             </div>
                             <div className="flex flex-col gap-6">
-                                <h3 className="text-sm uppercase tracking-wider font-bold text-slate-400 mb-2 border-b border-slate-100 pb-2">Detail Service</h3>
+                                <h3 className="text-sm uppercase tracking-wider font-bold text-slate-400 dark:text-slate-500 mb-2 border-b border-slate-100 dark:border-slate-700 pb-2">Detail Service</h3>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="flex flex-col gap-1.5">
-                                        <label className="text-sm font-semibold text-slate-700">Merek/Tipe Unit</label>
-                                        <input name="merek" value={booking.merek} onChange={handleChange} required className="h-10 px-3 w-full rounded border border-slate-300 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none" placeholder="e.g. Gnatus" type="text" />
+                                        <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Merek/Tipe Unit</label>
+                                        <input name="merek" value={booking.merek} onChange={handleChange} required className="h-10 px-3 w-full rounded border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none" placeholder="e.g. Gnatus" type="text" />
                                     </div>
                                     <div className="flex flex-col gap-1.5">
-                                        <label className="text-sm font-semibold text-slate-700">Jenis Layanan</label>
-                                        <select name="layanan" value={booking.layanan} onChange={handleChange} className="h-10 px-3 w-full rounded border border-slate-300 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                                        <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Jenis Layanan</label>
+                                        <select name="layanan" value={booking.layanan} onChange={handleChange} className="h-10 px-3 w-full rounded border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
                                             <option>Perbaikan Ringan</option>
                                             <option>Renovasi</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div className="flex flex-col gap-1.5">
-                                    <label className="text-sm font-semibold text-slate-700">Keluhan / Kerusakan</label>
-                                    <textarea name="keluhan" value={booking.keluhan} onChange={handleChange} required className="p-3 w-full rounded border border-slate-300 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none" placeholder="Deskripsikan masalahnya..." rows="2"></textarea>
+                                    <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Keluhan / Kerusakan</label>
+                                    <textarea name="keluhan" value={booking.keluhan} onChange={handleChange} required className="p-3 w-full rounded border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none" placeholder="Deskripsikan masalahnya..." rows="2"></textarea>
                                 </div>
                                 <div className="flex flex-col gap-1.5">
-                                    <label className="text-sm font-semibold text-slate-700">Rencana Jadwal</label>
-                                    <input name="jadwal" value={booking.jadwal} onChange={handleChange} className="h-10 px-3 w-full rounded border border-slate-300 bg-slate-50 text-slate-500 focus:ring-2 focus:ring-primary focus:border-transparent outline-none" type="date" />
+                                    <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Rencana Jadwal</label>
+                                    <input name="jadwal" value={booking.jadwal} onChange={handleChange} className="h-10 px-3 w-full rounded border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-500 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none" type="date" />
                                 </div>
                             </div>
                             <div className="md:col-span-2 mt-4">

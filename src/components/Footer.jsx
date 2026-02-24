@@ -23,9 +23,7 @@ export default function Footer() {
                 <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4 mb-12">
                     <div>
                         <div className="flex items-center gap-3 text-slate-900 dark:text-white mb-6">
-                            <div className="size-6 text-primary">
-                                <span className="material-symbols-outlined text-[24px]">dentistry</span>
-                            </div>
+                            <img src="/logo.png" alt="Karya Mandiri Dental Logo" className="h-[28px] w-[28px] rounded-full dark:invert dark:brightness-0" />
                             <h2 className="text-base font-bold">Karya Mandiri Dental</h2>
                         </div>
                         <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-6">

@@ -26,9 +26,7 @@ export default function Header() {
         <header className="sticky top-0 z-50 w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-300">
             <div className="px-4 md:px-10 py-3 flex items-center justify-between mx-auto max-w-7xl">
                 <Link to="/" className="flex items-center gap-3 text-slate-900 dark:text-white">
-                    <div className="size-8 text-primary">
-                        <span className="material-symbols-outlined text-[32px]">dentistry</span>
-                    </div>
+                    <img src="/logo.png" alt="Karya Mandiri Dental Logo" className="h-[36px] w-[36px] rounded-full dark:invert dark:brightness-0" />
                     <h2 className="text-lg font-bold leading-tight tracking-[-0.015em]">Karya Mandiri Dental</h2>
                 </Link>
 

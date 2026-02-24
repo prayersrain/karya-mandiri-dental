@@ -38,11 +38,11 @@ export default function About() {
 
             {/* Stats Bar */}
             <div className="relative z-30 mx-auto -mt-16 w-full max-w-6xl px-4">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white rounded-2xl shadow-xl p-6 border border-slate-100">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-6 border border-slate-100 dark:border-slate-700">
                     {stats.map((s, i) => (
                         <div key={i} className="flex flex-col items-center text-center p-4">
                             <span className="text-3xl font-black text-primary">{s.value}</span>
-                            <span className="text-sm font-medium text-slate-500 mt-1">{s.label}</span>
+                            <span className="text-sm font-medium text-slate-500 dark:text-slate-400 mt-1">{s.label}</span>
                         </div>
                     ))}
                 </div>
@@ -55,11 +55,11 @@ export default function About() {
                         <div className="h-1 w-12 rounded-full bg-primary"></div>
                         <span className="text-primary font-bold text-sm uppercase tracking-wider">Cerita Kami</span>
                     </div>
-                    <h2 className="text-3xl font-bold text-slate-900">Dedikasi Lebih Dari Satu Dekade Untuk Industri Dental</h2>
-                    <p className="text-slate-600 leading-relaxed">
+                    <h2 className="text-3xl font-bold text-slate-900 dark:text-white">Dedikasi Lebih Dari Satu Dekade Untuk Industri Dental</h2>
+                    <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
                         Karya Mandiri Dental didirikan oleh Wahyudi, seorang teknisi dental unit berpengalaman yang memiliki visi untuk menyediakan layanan service dan penjualan dental unit berkualitas tinggi dengan harga yang terjangkau.
                     </p>
-                    <p className="text-slate-600 leading-relaxed">
+                    <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
                         Berawal dari workshop kecil di Bekasi, kini kami telah melayani ratusan klinik gigi di seluruh Indonesia. Tim kami terdiri dari teknisi senior yang memiliki pengalaman lebih dari 10 tahun dalam menangani berbagai merek dental unit ternama.
                     </p>
                 </div>
@@ -71,27 +71,27 @@ export default function About() {
             </section>
 
             {/* Vision & Mission */}
-            <section className="bg-white py-20 px-4">
+            <section className="bg-white dark:bg-slate-900 py-20 px-4 transition-colors">
                 <div className="mx-auto max-w-7xl">
                     <div className="text-center mb-12">
-                        <h2 className="text-3xl font-bold text-slate-900 mb-3">Visi & Misi</h2>
+                        <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-3">Visi & Misi</h2>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                        <div className="bg-primary/5 border border-primary/20 rounded-2xl p-8">
+                        <div className="bg-primary/5 dark:bg-primary/10 border border-primary/20 dark:border-primary/30 rounded-2xl p-8">
                             <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-5">
                                 <span className="material-symbols-outlined text-3xl">visibility</span>
                             </div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3">Visi</h3>
-                            <p className="text-slate-600 leading-relaxed">
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">Visi</h3>
+                            <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
                                 Menjadi mitra utama dan terpercaya bagi setiap klinik gigi di Indonesia dalam menyediakan peralatan dental berkualitas tinggi dan layanan purna jual yang prima.
                             </p>
                         </div>
-                        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-8">
+                        <div className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-8">
                             <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-5">
                                 <span className="material-symbols-outlined text-3xl">flag</span>
                             </div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3">Misi</h3>
-                            <ul className="text-slate-600 leading-relaxed space-y-2">
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">Misi</h3>
+                            <ul className="text-slate-600 dark:text-slate-300 leading-relaxed space-y-2">
                                 <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> Menyediakan dental unit refurbished dan bekas dengan kualitas terjamin</li>
                                 <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> Memberikan layanan service yang cepat, transparan, dan bergaransi</li>
                                 <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span> Membangun hubungan jangka panjang berbasis kepercayaan</li>
